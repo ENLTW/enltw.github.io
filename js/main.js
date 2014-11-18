@@ -1,3 +1,5 @@
+$.global = new Object(); 
+
 jQuery(document).ready(function($){
 	//update this value if you change this breakpoint in the style.css file (or _layout.scss if you use SASS)
 	var MqL = 1070;
@@ -78,14 +80,15 @@ jQuery(document).ready(function($){
 	}
 
 	function updateSlider(active, direction) {
+        $.global.active = active;
 		var selected;
 		if( direction == 'next' ) {
 			selected = active.next();
 			//on Firefox CSS transition/animation fails when parent element changes visibility attribute
 			//so we have to change .cd-single-item childrens attributes after having changed its visibility value
 	        setTimeout(function() {
-	           	active.removeClass('cd-active').addClass('cd-hidden').next().removeClass('cd-move-right').addClass('cd-active').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
-	           		active.addClass('cd-not-visible');
+	           	$.global.active.removeClass('cd-active').addClass('cd-hidden').next().removeClass('cd-move-right').addClass('cd-active').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
+	           		$.global.active.addClass('cd-not-visible');
 	           	});
 	        }, 50);
 		} else {
@@ -93,8 +96,8 @@ jQuery(document).ready(function($){
 			//on Firefox CSS transition/animation fails when parent element changes visibility attribute
 			//so we have to change .cd-single-item childrens attributes after having changed its visibility value
 	        setTimeout(function() {
-	           	active.removeClass('cd-active').addClass('cd-move-right').prev().addClass('cd-active').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
-	           		active.addClass('cd-not-visible');
+	           	$.global.active.removeClass('cd-active').addClass('cd-move-right').prev().addClass('cd-active').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
+	           		$.global.active.addClass('cd-not-visible');
 	           	});
 	        }, 50);
 		}
